@@ -22,9 +22,9 @@ import org.opendolphin.core.client.ClientDolphin;
 import org.opendolphin.core.client.ClientPresentationModel;
 
 import myapp.presentationmodel.BasePmMixin;
-import myapp.presentationmodel.person.Person;
-import myapp.presentationmodel.person.PersonAtt;
-import myapp.presentationmodel.person.PersonCommands;
+import myapp.presentationmodel.canton.Canton;
+import myapp.presentationmodel.canton.CantonAtt;
+import myapp.presentationmodel.canton.CantonCommands;
 import myapp.presentationmodel.presentationstate.ApplicationState;
 import myapp.presentationmodel.presentationstate.ApplicationStateAtt;
 import myapp.util.AdditionalTag;
@@ -49,19 +49,22 @@ class RootPane extends GridPane implements ViewMixin, BasePmMixin {
     // clientDolphin is the single entry point to the PresentationModel-Layer
     private final ClientDolphin clientDolphin;
 
-    private Label headerLabel;
+    private Label lblCanton;
 
-    private Label idLabel;
-    private Label idField;
+    private Label lblMainTown;
+    private TextField txtMainTown;
 
-    private Label     nameLabel;
-    private TextField nameField;
+    private Label lblJoin;
+    private TextField txtJoin;
 
-    private Label     ageLabel;
-    private TextField ageField;
+    private Label lblCitizens;
+    private TextField txtCitizens;
 
-    private Label    isAdultLabel;
-    private CheckBox isAdultCheckBox;
+    private Label lblArea;
+    private TextField txtArea;
+
+    private Label lblLanguage;
+    private TextField txtLanguage;
 
     private Button saveButton;
     private Button resetButton;
@@ -69,7 +72,7 @@ class RootPane extends GridPane implements ViewMixin, BasePmMixin {
     private Button germanButton;
     private Button englishButton;
 
-    private final Person personProxy;
+    private final Canton cantonProxy;
 
     //always needed
     private final ApplicationState ps;
@@ -77,7 +80,7 @@ class RootPane extends GridPane implements ViewMixin, BasePmMixin {
     RootPane(ClientDolphin clientDolphin) {
         this.clientDolphin = clientDolphin;
         ps = getApplicationState();
-        personProxy = getPersonProxy();
+        cantonProxy = getCantonProxy();
 
         init();
     }
@@ -95,20 +98,23 @@ class RootPane extends GridPane implements ViewMixin, BasePmMixin {
 
     @Override
     public void initializeParts() {
-        headerLabel = new Label();
-        headerLabel.getStyleClass().add("heading");
+        lblCanton = new Label();
+        lblCanton.getStyleClass().add("heading");
 
-        idLabel = new Label();
-        idField = new Label();
+        lblMainTown = new Label();
+        txtMainTown = new TextField();
 
-        nameLabel = new Label();
-        nameField = new TextField();
+        lblJoin = new Label();
+        txtJoin = new TextField();
 
-        ageLabel = new Label();
-        ageField = new TextField();
+        lblCitizens = new Label();
+        txtCitizens = new TextField();
 
-        isAdultLabel    = new Label();
-        isAdultCheckBox = new CheckBox();
+        lblArea = new Label();
+        txtArea = new TextField();
+
+        lblLanguage = new Label();
+        txtLanguage = new TextField();
 
         saveButton    = new Button("Save");
         resetButton   = new Button("Reset");
@@ -123,17 +129,19 @@ class RootPane extends GridPane implements ViewMixin, BasePmMixin {
         grow.setHgrow(Priority.ALWAYS);
 
         getColumnConstraints().setAll(new ColumnConstraints(), grow);
-        setVgrow(headerLabel, Priority.ALWAYS);
+        setVgrow(lblCanton, Priority.ALWAYS);
 
-        add(headerLabel    , 0, 0, 5, 1);
-        add(idLabel        , 0, 1);
-        add(idField        , 1, 1, 4, 1);
-        add(nameLabel      , 0, 2);
-        add(nameField      , 1, 2, 4, 1);
-        add(ageLabel       , 0, 3);
-        add(ageField       , 1, 3, 4, 1);
-        add(isAdultLabel   , 0, 4);
-        add(isAdultCheckBox, 1, 4, 4, 1);
+        add(lblCanton, 0, 0, 5, 1);
+        add(lblMainTown, 0, 1);
+        add(txtMainTown, 1, 1, 4, 1);
+        add(lblJoin, 0, 2);
+        add(txtJoin, 1, 2, 4, 1);
+        add(lblCitizens, 0, 3);
+        add(txtCitizens, 1, 3, 4, 1);
+        add(lblArea, 0, 4);
+        add(txtArea, 1, 4, 4, 1);
+        add(lblLanguage, 0, 5);
+        add(txtLanguage, 1,5,4,1);
         add(new HBox(5, saveButton, resetButton, nextButton, germanButton, englishButton), 0, 5, 5, 1);
     }
 
@@ -143,9 +151,9 @@ class RootPane extends GridPane implements ViewMixin, BasePmMixin {
         // or set a value on an Attribute
 
         ApplicationState ps = getApplicationState();
-        saveButton.setOnAction(   $ -> clientDolphin.send(PersonCommands.SAVE));
-        resetButton.setOnAction(  $ -> clientDolphin.send(PersonCommands.RESET));
-        nextButton.setOnAction(   $ -> clientDolphin.send(PersonCommands.LOAD_SOME_PERSON));
+        saveButton.setOnAction(   $ -> clientDolphin.send(CantonCommands.SAVE));
+        resetButton.setOnAction(  $ -> clientDolphin.send(CantonCommands.RESET));
+        nextButton.setOnAction(   $ -> clientDolphin.send(CantonCommands.LOAD_SOME_CANTON));
 
         germanButton.setOnAction( $ -> ps.language.setValue(Language.GERMAN));
         englishButton.setOnAction($ -> ps.language.setValue(Language.ENGLISH));
@@ -153,17 +161,29 @@ class RootPane extends GridPane implements ViewMixin, BasePmMixin {
 
     @Override
     public void setupValueChangedListeners() {
-        personProxy.name.dirtyProperty().addListener((observable, oldValue, newValue)    -> updateStyle(nameField      , DIRTY_STYLE, newValue));
-        personProxy.age.dirtyProperty().addListener((observable, oldValue, newValue)     -> updateStyle(ageField       , DIRTY_STYLE, newValue));
-        personProxy.isAdult.dirtyProperty().addListener((observable, oldValue, newValue) -> updateStyle(isAdultCheckBox, DIRTY_STYLE, newValue));
+        cantonProxy.name.dirtyProperty().addListener((observable, oldValue, newValue)    -> updateStyle(txtJoin, DIRTY_STYLE, newValue));
+        cantonProxy.mainTown.dirtyProperty().addListener((observable, oldValue, newValue)     -> updateStyle(txtCitizens, DIRTY_STYLE, newValue));
+        cantonProxy.join.dirtyProperty().addListener((observable, oldValue, newValue) -> updateStyle(txtArea, DIRTY_STYLE, newValue));
+        cantonProxy.citizens.dirtyProperty().addListener((observable, oldValue, newValue)    -> updateStyle(txtJoin, DIRTY_STYLE, newValue));
+        cantonProxy.area.dirtyProperty().addListener((observable, oldValue, newValue)     -> updateStyle(txtCitizens, DIRTY_STYLE, newValue));
+        cantonProxy.language.dirtyProperty().addListener((observable, oldValue, newValue) -> updateStyle(txtArea, DIRTY_STYLE, newValue));
 
-        personProxy.name.validProperty().addListener((observable, oldValue, newValue)    -> updateStyle(nameField      , INVALID_STYLE, !newValue));
-        personProxy.age.validProperty().addListener((observable, oldValue, newValue)     -> updateStyle(ageField       , INVALID_STYLE, !newValue));
-        personProxy.isAdult.validProperty().addListener((observable, oldValue, newValue) -> updateStyle(isAdultCheckBox, INVALID_STYLE, !newValue));
+        cantonProxy.name.validProperty().addListener((observable, oldValue, newValue)    -> updateStyle(txtJoin, INVALID_STYLE, !newValue));
+        cantonProxy.mainTown.validProperty().addListener((observable, oldValue, newValue)     -> updateStyle(txtCitizens, INVALID_STYLE, !newValue));
+        cantonProxy.join.validProperty().addListener((observable, oldValue, newValue) -> updateStyle(txtArea, INVALID_STYLE, !newValue));
+        cantonProxy.citizens.validProperty().addListener((observable, oldValue, newValue)    -> updateStyle(txtJoin, INVALID_STYLE, !newValue));
+        cantonProxy.area.validProperty().addListener((observable, oldValue, newValue)     -> updateStyle(txtCitizens, INVALID_STYLE, !newValue));
+        cantonProxy.language.validProperty().addListener((observable, oldValue, newValue) -> updateStyle(txtArea, INVALID_STYLE, !newValue));
 
-        personProxy.name.mandatoryProperty().addListener((observable, oldValue, newValue)    -> updateStyle(nameField      , MANDATORY_STYLE, newValue));
-        personProxy.age.mandatoryProperty().addListener((observable, oldValue, newValue)     -> updateStyle(ageField       , MANDATORY_STYLE, newValue));
-        personProxy.isAdult.mandatoryProperty().addListener((observable, oldValue, newValue) -> updateStyle(isAdultCheckBox, MANDATORY_STYLE, newValue));
+
+
+        cantonProxy.name.mandatoryProperty().addListener((observable, oldValue, newValue)    -> updateStyle(txtJoin, MANDATORY_STYLE, newValue));
+        cantonProxy.mainTown.mandatoryProperty().addListener((observable, oldValue, newValue)     -> updateStyle(txtCitizens, MANDATORY_STYLE, newValue));
+        cantonProxy.join.mandatoryProperty().addListener((observable, oldValue, newValue) -> updateStyle(txtArea, MANDATORY_STYLE, newValue));
+        cantonProxy.citizens.mandatoryProperty().addListener((observable, oldValue, newValue)    -> updateStyle(txtJoin, MANDATORY_STYLE, newValue));
+        cantonProxy.area.mandatoryProperty().addListener((observable, oldValue, newValue)     -> updateStyle(txtCitizens, MANDATORY_STYLE, newValue));
+        cantonProxy.language.mandatoryProperty().addListener((observable, oldValue, newValue) -> updateStyle(txtArea, MANDATORY_STYLE, newValue));
+
     }
 
     @Override
@@ -174,49 +194,82 @@ class RootPane extends GridPane implements ViewMixin, BasePmMixin {
 
     private void setupBindings_DolphinBased() {
         // you can fetch all existing PMs from the modelstore via clientDolphin
-        ClientPresentationModel personProxyPM = clientDolphin.getAt(BasePmMixin.PERSON_PROXY_PM_ID);
+        ClientPresentationModel cantonProxyPM = clientDolphin.getAt(BasePmMixin.CANTON_PROXY_PM_ID);
 
         //JFXBinder is ui toolkit agnostic. We have to use Strings
-        JFXBinder.bind(PersonAtt.NAME.name())
-                 .of(personProxyPM)
-                 .using(value -> value + ", " + personProxyPM.getAt(PersonAtt.AGE.name()).getValue())
+        JFXBinder.bind(CantonAtt.NAME.name())
+                 .of(cantonProxyPM)
+                 .using(value -> value + ", " + cantonProxyPM.getAt(CantonAtt.NAME.name()).getValue())
                  .to("text")
-                 .of(headerLabel);
+                 .of(lblCanton);
 
-        JFXBinder.bind(PersonAtt.AGE.name())
-                 .of(personProxyPM)
-                 .using(value -> personProxyPM.getAt(PersonAtt.NAME.name()).getValue() + ", " + value)
+        JFXBinder.bind(CantonAtt.MAINTOWN.name())
+                 .of(cantonProxyPM)
+                 .using(value -> cantonProxyPM.getAt(CantonAtt.MAINTOWN.name()).getValue() + ", " + value)
                  .to("text")
-                 .of(headerLabel);
+                 .of(lblCanton);
 
-        JFXBinder.bind(PersonAtt.NAME.name(), Tag.LABEL).of(personProxyPM).to("text").of(nameLabel);
-        JFXBinder.bind(PersonAtt.NAME.name()).of(personProxyPM).to("text").of(nameField);
-        JFXBinder.bind("text").of(nameField).to(PersonAtt.NAME.name()).of(personProxyPM);
+        JFXBinder.bind(CantonAtt.MAINTOWN.name(), Tag.LABEL).of(cantonProxyPM).to("text").of(lblMainTown);
+        JFXBinder.bind(CantonAtt.MAINTOWN.name()).of(cantonProxyPM).to("text").of(txtMainTown);
+        JFXBinder.bind("text").of(txtMainTown).to(CantonAtt.MAINTOWN.name()).of(cantonProxyPM);
 
-        JFXBinder.bind(PersonAtt.AGE.name(), Tag.LABEL).of(personProxyPM).to("text").of(ageLabel);
-        JFXBinder.bind(PersonAtt.AGE.name()).of(personProxyPM).to("text").of(ageField);
+               JFXBinder.bind(CantonAtt.JOIN.name(), Tag.LABEL).of(cantonProxyPM).to("text").of(lblJoin);
+        JFXBinder.bind(CantonAtt.JOIN.name()).of(cantonProxyPM).to("text").of(txtJoin);
         Converter toIntConverter = value -> {
             try {
                 int newValue = Integer.parseInt(value.toString());
-                personProxyPM.getAt(PersonAtt.AGE.name(), AdditionalTag.VALID).setValue(true);
-                personProxyPM.getAt(PersonAtt.AGE.name(), AdditionalTag.VALIDATION_MESSAGE).setValue("OK");
+                cantonProxyPM.getAt(CantonAtt.JOIN.name(), AdditionalTag.VALID).setValue(true);
+                cantonProxyPM.getAt(CantonAtt.JOIN.name(), AdditionalTag.VALIDATION_MESSAGE).setValue("OK");
 
                 return newValue;
             } catch (NumberFormatException e) {
-                personProxyPM.getAt(PersonAtt.AGE.name(), AdditionalTag.VALID).setValue(false);
-                personProxyPM.getAt(PersonAtt.AGE.name(), AdditionalTag.VALIDATION_MESSAGE).setValue("Not a number");
-                return personProxyPM.getAt(PersonAtt.AGE.name()).getValue();
+                cantonProxyPM.getAt(CantonAtt.JOIN.name(), AdditionalTag.VALID).setValue(false);
+                cantonProxyPM.getAt(CantonAtt.JOIN.name(), AdditionalTag.VALIDATION_MESSAGE).setValue("Not a number");
+                return cantonProxyPM.getAt(CantonAtt.JOIN.name()).getValue();
             }
         };
-        JFXBinder.bind("text").of(ageField).using(toIntConverter).to(PersonAtt.AGE.name()).of(personProxyPM);
 
-        JFXBinder.bind(PersonAtt.IS_ADULT.name(), Tag.LABEL).of(personProxyPM).to("text").of(isAdultLabel);
-        JFXBinder.bind(PersonAtt.IS_ADULT.name()).of(personProxyPM).to("selected").of(isAdultCheckBox);
-        JFXBinder.bind("selected").of(isAdultCheckBox).to(PersonAtt.IS_ADULT.name()).of(personProxyPM);
+        JFXBinder.bind("text").of(txtJoin).using(toIntConverter).to(CantonAtt.JOIN.name()).of(cantonProxyPM);
 
-        Converter not = value -> !(boolean) value;
-        JFXBinder.bindInfo(Attribute.DIRTY_PROPERTY).of(personProxyPM).using(not).to("disable").of(saveButton);
-        JFXBinder.bindInfo(Attribute.DIRTY_PROPERTY).of(personProxyPM).using(not).to("disable").of(resetButton);
+        JFXBinder.bind(CantonAtt.CITIZENS.name(), Tag.LABEL).of(cantonProxyPM).to("text").of(lblCitizens);
+        JFXBinder.bind(CantonAtt.CITIZENS.name()).of(cantonProxyPM).to("text").of(txtCitizens);
+        Converter toIntConverter1 = value -> {
+            try {
+                int newValue = Integer.parseInt(value.toString());
+                cantonProxyPM.getAt(CantonAtt.CITIZENS.name(), AdditionalTag.VALID).setValue(true);
+                cantonProxyPM.getAt(CantonAtt.CITIZENS.name(), AdditionalTag.VALIDATION_MESSAGE).setValue("OK");
+
+                return newValue;
+            } catch (NumberFormatException e) {
+                cantonProxyPM.getAt(CantonAtt.CITIZENS.name(), AdditionalTag.VALID).setValue(false);
+                cantonProxyPM.getAt(CantonAtt.CITIZENS.name(), AdditionalTag.VALIDATION_MESSAGE).setValue("Not a number");
+                return cantonProxyPM.getAt(CantonAtt.CITIZENS.name()).getValue();
+            }
+        };
+
+        JFXBinder.bind("text").of(txtJoin).using(toIntConverter1).to(CantonAtt.CITIZENS.name()).of(cantonProxyPM);
+
+        JFXBinder.bind(CantonAtt.AREA.name(), Tag.LABEL).of(cantonProxyPM).to("text").of(lblArea);
+        JFXBinder.bind(CantonAtt.AREA.name()).of(cantonProxyPM).to("text").of(txtArea);
+        Converter toIntConverter2 = value -> {
+            try {
+                int newValue = Integer.parseInt(value.toString());
+                cantonProxyPM.getAt(CantonAtt.AREA.name(), AdditionalTag.VALID).setValue(true);
+                cantonProxyPM.getAt(CantonAtt.AREA.name(), AdditionalTag.VALIDATION_MESSAGE).setValue("OK");
+
+                return newValue;
+            } catch (NumberFormatException e) {
+                cantonProxyPM.getAt(CantonAtt.AREA.name(), AdditionalTag.VALID).setValue(false);
+                cantonProxyPM.getAt(CantonAtt.AREA.name(), AdditionalTag.VALIDATION_MESSAGE).setValue("Not a number");
+                return cantonProxyPM.getAt(CantonAtt.AREA.name()).getValue();
+            }
+        };
+
+        JFXBinder.bind("text").of(txtArea).using(toIntConverter2).to(CantonAtt.AREA.name()).of(cantonProxyPM);
+
+        JFXBinder.bind(CantonAtt.LANGUAGE.name(), Tag.LABEL).of(cantonProxyPM).to("text").of(lblLanguage);
+        JFXBinder.bind(CantonAtt.LANGUAGE.name()).of(cantonProxyPM).to("text").of(txtLanguage);
+        JFXBinder.bind("text").of(txtLanguage).to(CantonAtt.LANGUAGE.name()).of(cantonProxyPM);
 
         PresentationModel presentationStatePM = clientDolphin.getAt(BasePmMixin.APPLICATION_STATE_PM_ID);
 
@@ -225,20 +278,34 @@ class RootPane extends GridPane implements ViewMixin, BasePmMixin {
     }
 
     private void setupBindings_VeneerBased(){
-        headerLabel.textProperty().bind(personProxy.name.valueProperty().concat(", ").concat(personProxy.age.valueProperty()));
+        lblCanton.textProperty().bind(cantonProxy.name.valueProperty().concat(", ").concat(cantonProxy.mainTown.valueProperty()));
 
-        idLabel.textProperty().bind(personProxy.id.labelProperty());
-        idField.textProperty().bind(personProxy.id.valueProperty().asString());
+        lblMainTown.textProperty().bind(cantonProxy.mainTown.labelProperty());
+        txtMainTown.textProperty().bind(cantonProxy.mainTown.valueProperty());
 
-        setupBinding(nameLabel   , nameField      , personProxy.name);
-        setupBinding(ageLabel    , ageField       , personProxy.age);
-        setupBinding(isAdultLabel, isAdultCheckBox, personProxy.isAdult);
+        lblJoin.textProperty().bind(cantonProxy.join.labelProperty());
+        txtJoin.textProperty().bind(cantonProxy.join.valueProperty().asString());
+
+        lblCitizens.textProperty().bind(cantonProxy.citizens.labelProperty());
+        txtCitizens.textProperty().bind(cantonProxy.citizens.valueProperty().asString());
+
+        lblArea.textProperty().bind(cantonProxy.area.labelProperty());
+        txtArea.textProperty().bind(cantonProxy.area.valueProperty().asString());
+
+        lblLanguage.textProperty().bind(cantonProxy.language.labelProperty());
+        txtLanguage.textProperty().bind(cantonProxy.language.valueProperty());
+
+        setupBinding(lblMainTown, txtMainTown, cantonProxy.mainTown);
+        setupBinding(lblJoin, txtJoin, cantonProxy.join);
+        setupBinding(lblCitizens, txtCitizens, cantonProxy.citizens);
+        setupBinding(lblArea, txtArea, cantonProxy.area);
+        setupBinding(lblLanguage, txtLanguage, cantonProxy.language);
 
         germanButton.disableProperty().bind(Bindings.createBooleanBinding(() -> Language.GERMAN.equals(ps.language.getValue()), ps.language.valueProperty()));
         englishButton.disableProperty().bind(Bindings.createBooleanBinding(() -> Language.ENGLISH.equals(ps.language.getValue()), ps.language.valueProperty()));
 
-        saveButton.disableProperty().bind(personProxy.dirtyProperty().not());
-        resetButton.disableProperty().bind(personProxy.dirtyProperty().not());
+        saveButton.disableProperty().bind(cantonProxy.dirtyProperty().not());
+        resetButton.disableProperty().bind(cantonProxy.dirtyProperty().not());
     }
 
     private void setupBinding(Label label, TextField field, AttributeFX attribute) {
