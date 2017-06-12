@@ -7,9 +7,6 @@ import javafx.beans.property.SimpleBooleanProperty;
 import org.opendolphin.core.BasePresentationModel;
 import org.opendolphin.core.PresentationModel;
 
-/**
- * Capturing the essentials of a veneer: it has a backing presentation model as an immutable object state.
- */
 
 public class PresentationModelVeneer {
 

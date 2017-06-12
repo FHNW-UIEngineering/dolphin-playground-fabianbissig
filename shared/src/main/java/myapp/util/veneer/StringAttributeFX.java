@@ -7,9 +7,6 @@ import org.opendolphin.core.PresentationModel;
 import myapp.util.AttributeDescription;
 import myapp.util.veneer.dolphinattributeadapter.StringAttributeAdapter;
 
-/**
- * @author Dieter Holz
- */
 public class StringAttributeFX extends AttributeFX<StringProperty, String> {
     private static final String REGEX = ".*";
 

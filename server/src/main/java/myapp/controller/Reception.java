@@ -5,10 +5,6 @@ import org.opendolphin.core.server.comm.ActionRegistry;
 
 import myapp.service.SomeService;
 
-/**
- * At the reception all controllers check in.
- *
- */
 
 public class Reception extends DolphinServerAction {
     private SomeService myService;
@@ -18,10 +14,9 @@ public class Reception extends DolphinServerAction {
     }
 
     public void registerIn(ActionRegistry registry) {
-        // todo register all your controllers here.
         getServerDolphin().register(new CantonController(myService));
 
-        //always needed
+
         getServerDolphin().register(new ApplicationStateController());
     }
 }

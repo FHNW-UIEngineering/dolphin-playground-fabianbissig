@@ -10,9 +10,6 @@ import org.opendolphin.core.PresentationModel;
 import myapp.util.AttributeDescription;
 import myapp.util.veneer.dolphinattributeadapter.EnumAttributeAdapter;
 
-/**
- * @author Dieter Holz
- */
 public class EnumAttributeFX<T extends Enum<T>> extends AttributeFX<ObjectProperty<T>, T> {
 
     private final Class<T> clazz;

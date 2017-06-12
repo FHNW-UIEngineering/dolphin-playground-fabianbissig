@@ -2,9 +2,6 @@ package myapp.util;
 
 import java.util.Locale;
 
-/**
- * @author Dieter Holz
- */
 public enum Language {
     ENGLISH(Locale.ENGLISH),
     GERMAN(new Locale("de", "CH"));

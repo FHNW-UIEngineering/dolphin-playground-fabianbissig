@@ -4,11 +4,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 import org.opendolphin.core.Attribute;
 
-/**
- * Adapter for a Dolphin Attribute of type Integer.
- *
- * @author Dieter Holz
- */
 public class IntegerAttributeAdapter extends SimpleIntegerProperty {
     private final ObjectAttributeAdapter<Integer> wrapper;
 

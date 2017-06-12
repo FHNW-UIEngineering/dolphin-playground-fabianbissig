@@ -7,9 +7,6 @@ import org.opendolphin.core.PresentationModel;
 import myapp.util.AttributeDescription;
 import myapp.util.veneer.dolphinattributeadapter.LongAttributeAdapter;
 
-/**
- * @author Dieter Holz
- */
 public class LongAttributeFX extends AttributeFX<LongProperty, Number> {
     private static final String REGEX          = "[+-]?[\\d']+";
     private static final String FORMAT_PATTERN = "%,d";

@@ -12,10 +12,6 @@ import myapp.presentationmodel.BasePmMixin;
 import myapp.presentationmodel.canton.CantonCommands;
 import myapp.util.BasicCommands;
 
-/**
- * The main view of MyApp.
- */
-
 public class MyAppView extends Application implements BasePmMixin {
     static ClientDolphin clientDolphin;
 

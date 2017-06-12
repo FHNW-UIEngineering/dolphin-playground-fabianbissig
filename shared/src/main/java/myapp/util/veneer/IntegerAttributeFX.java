@@ -7,9 +7,6 @@ import org.opendolphin.core.PresentationModel;
 import myapp.util.AttributeDescription;
 import myapp.util.veneer.dolphinattributeadapter.IntegerAttributeAdapter;
 
-/**
- * @author Dieter Holz
- */
 public class IntegerAttributeFX extends AttributeFX<IntegerProperty, Number> {
     private static final String REGEX          = "[+-]?[\\d']{1,14}";
     private static final String FORMAT_PATTERN = "%,d";

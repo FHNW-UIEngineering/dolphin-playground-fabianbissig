@@ -6,11 +6,9 @@ import org.opendolphin.core.Dolphin;
 import myapp.presentationmodel.canton.Canton;
 import myapp.presentationmodel.presentationstate.ApplicationState;
 
-/**
- * @author Dieter Holz
- */
+
 public interface BasePmMixin {
-    //todo: for all your basePMs (as delivered by your Controllers) specify constants and getter-methods like these
+
     String CANTON_PROXY_PM_ID = PMDescription.CANTON.pmId(-777L);
 
     default BasePresentationModel getCantonProxyPM() {

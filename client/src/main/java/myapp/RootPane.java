@@ -33,20 +33,12 @@ import myapp.util.ViewMixin;
 import myapp.util.veneer.AttributeFX;
 import myapp.util.veneer.BooleanAttributeFX;
 
-/**
- * Implementation of the view details, event handling, and binding.
- *
- * @author Dieter Holz
- *
- * todo : Replace it with your application UI
- */
 class RootPane extends GridPane implements ViewMixin, BasePmMixin {
 
     private static final String DIRTY_STYLE     = "dirty";
     private static final String INVALID_STYLE   = "invalid";
     private static final String MANDATORY_STYLE = "mandatory";
 
-    // clientDolphin is the single entry point to the PresentationModel-Layer
     private final ClientDolphin clientDolphin;
 
     private Label lblCanton;
@@ -74,7 +66,7 @@ class RootPane extends GridPane implements ViewMixin, BasePmMixin {
 
     private final Canton cantonProxy;
 
-    //always needed
+
     private final ApplicationState ps;
 
     RootPane(ClientDolphin clientDolphin) {
@@ -142,13 +134,11 @@ class RootPane extends GridPane implements ViewMixin, BasePmMixin {
         add(txtArea, 1, 4, 4, 1);
         add(lblLanguage, 0, 5);
         add(txtLanguage, 1,5,4,1);
-        add(new HBox(5, saveButton, resetButton, nextButton, germanButton, englishButton), 0, 5, 5, 1);
+        add(new HBox(5, saveButton, resetButton, nextButton, germanButton, englishButton), 0, 6, 5, 1);
     }
 
     @Override
     public void setupEventHandlers() {
-        // all events either send a command (needs to be registered in a controller on the server side)
-        // or set a value on an Attribute
 
         ApplicationState ps = getApplicationState();
         saveButton.setOnAction(   $ -> clientDolphin.send(CantonCommands.SAVE));
@@ -161,14 +151,14 @@ class RootPane extends GridPane implements ViewMixin, BasePmMixin {
 
     @Override
     public void setupValueChangedListeners() {
-        cantonProxy.name.dirtyProperty().addListener((observable, oldValue, newValue)    -> updateStyle(txtJoin, DIRTY_STYLE, newValue));
+        //cantonProxy.name.dirtyProperty().addListener((observable, oldValue, newValue)    -> updateStyle(txtJoin, DIRTY_STYLE, newValue));
         cantonProxy.mainTown.dirtyProperty().addListener((observable, oldValue, newValue)     -> updateStyle(txtCitizens, DIRTY_STYLE, newValue));
         cantonProxy.join.dirtyProperty().addListener((observable, oldValue, newValue) -> updateStyle(txtArea, DIRTY_STYLE, newValue));
         cantonProxy.citizens.dirtyProperty().addListener((observable, oldValue, newValue)    -> updateStyle(txtJoin, DIRTY_STYLE, newValue));
         cantonProxy.area.dirtyProperty().addListener((observable, oldValue, newValue)     -> updateStyle(txtCitizens, DIRTY_STYLE, newValue));
         cantonProxy.language.dirtyProperty().addListener((observable, oldValue, newValue) -> updateStyle(txtArea, DIRTY_STYLE, newValue));
 
-        cantonProxy.name.validProperty().addListener((observable, oldValue, newValue)    -> updateStyle(txtJoin, INVALID_STYLE, !newValue));
+        //cantonProxy.name.validProperty().addListener((observable, oldValue, newValue)    -> updateStyle(txtJoin, INVALID_STYLE, !newValue));
         cantonProxy.mainTown.validProperty().addListener((observable, oldValue, newValue)     -> updateStyle(txtCitizens, INVALID_STYLE, !newValue));
         cantonProxy.join.validProperty().addListener((observable, oldValue, newValue) -> updateStyle(txtArea, INVALID_STYLE, !newValue));
         cantonProxy.citizens.validProperty().addListener((observable, oldValue, newValue)    -> updateStyle(txtJoin, INVALID_STYLE, !newValue));
@@ -177,7 +167,7 @@ class RootPane extends GridPane implements ViewMixin, BasePmMixin {
 
 
 
-        cantonProxy.name.mandatoryProperty().addListener((observable, oldValue, newValue)    -> updateStyle(txtJoin, MANDATORY_STYLE, newValue));
+        //cantonProxy.name.mandatoryProperty().addListener((observable, oldValue, newValue)    -> updateStyle(txtJoin, MANDATORY_STYLE, newValue));
         cantonProxy.mainTown.mandatoryProperty().addListener((observable, oldValue, newValue)     -> updateStyle(txtCitizens, MANDATORY_STYLE, newValue));
         cantonProxy.join.mandatoryProperty().addListener((observable, oldValue, newValue) -> updateStyle(txtArea, MANDATORY_STYLE, newValue));
         cantonProxy.citizens.mandatoryProperty().addListener((observable, oldValue, newValue)    -> updateStyle(txtJoin, MANDATORY_STYLE, newValue));
@@ -193,10 +183,10 @@ class RootPane extends GridPane implements ViewMixin, BasePmMixin {
     }
 
     private void setupBindings_DolphinBased() {
-        // you can fetch all existing PMs from the modelstore via clientDolphin
+
         ClientPresentationModel cantonProxyPM = clientDolphin.getAt(BasePmMixin.CANTON_PROXY_PM_ID);
 
-        //JFXBinder is ui toolkit agnostic. We have to use Strings
+
         JFXBinder.bind(CantonAtt.NAME.name())
                  .of(cantonProxyPM)
                  .using(value -> value + ", " + cantonProxyPM.getAt(CantonAtt.NAME.name()).getValue())
@@ -278,9 +268,9 @@ class RootPane extends GridPane implements ViewMixin, BasePmMixin {
     }
 
     private void setupBindings_VeneerBased(){
-        lblCanton.textProperty().bind(cantonProxy.name.valueProperty().concat(", ").concat(cantonProxy.mainTown.valueProperty()));
+          lblCanton.textProperty().bind(cantonProxy.name.valueProperty().concat(", ").concat(cantonProxy.mainTown.valueProperty()));
 
-        lblMainTown.textProperty().bind(cantonProxy.mainTown.labelProperty());
+     /*   lblMainTown.textProperty().bind(cantonProxy.mainTown.labelProperty());
         txtMainTown.textProperty().bind(cantonProxy.mainTown.valueProperty());
 
         lblJoin.textProperty().bind(cantonProxy.join.labelProperty());
@@ -293,7 +283,7 @@ class RootPane extends GridPane implements ViewMixin, BasePmMixin {
         txtArea.textProperty().bind(cantonProxy.area.valueProperty().asString());
 
         lblLanguage.textProperty().bind(cantonProxy.language.labelProperty());
-        txtLanguage.textProperty().bind(cantonProxy.language.valueProperty());
+        txtLanguage.textProperty().bind(cantonProxy.language.valueProperty());*/
 
         setupBinding(lblMainTown, txtMainTown, cantonProxy.mainTown);
         setupBinding(lblJoin, txtJoin, cantonProxy.join);

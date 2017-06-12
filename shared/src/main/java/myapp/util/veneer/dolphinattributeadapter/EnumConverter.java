@@ -1,8 +1,5 @@
 package myapp.util.veneer.dolphinattributeadapter;
 
-/**
- * @author Dieter Holz
- */
 public class EnumConverter<T extends Enum<T>> implements AttributeValueConverter<T> {
     private final Class<T> enumClass;
 

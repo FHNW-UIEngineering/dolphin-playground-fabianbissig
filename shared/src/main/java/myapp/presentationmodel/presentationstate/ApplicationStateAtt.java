@@ -4,12 +4,9 @@ import myapp.presentationmodel.PMDescription;
 import myapp.util.AttributeDescription;
 import myapp.util.ValueType;
 
-/**
- * @author Dieter Holz
- */
+
 
 public enum ApplicationStateAtt implements AttributeDescription {
-    // todo: add all application specific attributes
 
 
     // these are almost always needed

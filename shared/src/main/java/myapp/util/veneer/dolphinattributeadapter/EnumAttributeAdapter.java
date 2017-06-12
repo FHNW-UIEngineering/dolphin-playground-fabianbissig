@@ -4,9 +4,6 @@ import javafx.beans.property.SimpleObjectProperty;
 
 import org.opendolphin.core.Attribute;
 
-/**
- * @author Dieter Holz
- */
 public class EnumAttributeAdapter<T extends Enum<T>> extends SimpleObjectProperty<T> {
     private final ObjectAttributeAdapter<T> wrapper;
 

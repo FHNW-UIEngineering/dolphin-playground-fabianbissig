@@ -7,9 +7,6 @@ import org.opendolphin.core.client.comm.HttpClientConnector;
 import org.opendolphin.core.client.comm.JavaFXUiThreadHandler;
 import org.opendolphin.core.comm.JsonCodec;
 
-/**
- * @author Dieter Holz
- */
 public class DefaultClientDolphinProvider {
 
     public static ClientDolphin getClientDolphin(String serverURL) {

@@ -7,9 +7,6 @@ import org.opendolphin.core.PresentationModel;
 import myapp.util.AttributeDescription;
 import myapp.util.veneer.dolphinattributeadapter.BooleanAttributeAdapter;
 
-/**
- * @author Dieter Holz
- */
 public class BooleanAttributeFX extends AttributeFX<BooleanProperty, Boolean> {
     private static final String TRUE  = "true";
     private static final String FALSE = "false";

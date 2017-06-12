@@ -8,9 +8,7 @@ import myapp.util.Language;
 import myapp.util.veneer.StringAttributeFX;
 import myapp.util.veneer.PresentationModelVeneer;
 
-/**
- * @author Dieter Holz
- */
+
 public class ApplicationState extends PresentationModelVeneer {
 
     public ApplicationState(BasePresentationModel pm) {

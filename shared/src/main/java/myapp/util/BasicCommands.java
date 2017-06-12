@@ -1,9 +1,5 @@
 package myapp.util;
 
-
-/**
- * @author Dieter Holz
- */
 public interface BasicCommands {
 
     String INITIALIZE_BASE_PMS   = unique("initializeBasePMs");

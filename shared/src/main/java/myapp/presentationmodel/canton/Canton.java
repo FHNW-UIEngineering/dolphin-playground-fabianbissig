@@ -8,9 +8,7 @@ import myapp.util.veneer.LongAttributeFX;
 import myapp.util.veneer.StringAttributeFX;
 import myapp.util.veneer.PresentationModelVeneer;
 
-/**
- * @author Dieter Holz
- */
+
 public class Canton extends PresentationModelVeneer {
     public Canton(BasePresentationModel pm) {
         super(pm);

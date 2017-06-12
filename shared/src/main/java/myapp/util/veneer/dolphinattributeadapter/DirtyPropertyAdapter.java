@@ -6,9 +6,6 @@ import javafx.beans.property.ReadOnlyBooleanPropertyBase;
 
 import org.opendolphin.core.Attribute;
 
-/**
- * @author Dieter Holz
- */
 public class DirtyPropertyAdapter extends ReadOnlyBooleanPropertyBase {
     private final WeakReference<Attribute> attributeRef;
     private final String                   name;

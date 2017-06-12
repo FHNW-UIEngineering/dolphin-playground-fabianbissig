@@ -10,7 +10,6 @@ public class MyAppServlet extends DolphinServlet {
 
 	@Override
 	protected void registerApplicationActions(DefaultServerDolphin serverDolphin) {
-        //todo: instantiate all your services here and provide them to the Reception
         SomeRemoteService myService = new SomeRemoteService();
 
         serverDolphin.register(new Reception(myService));

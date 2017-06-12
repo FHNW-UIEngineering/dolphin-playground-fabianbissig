@@ -4,11 +4,6 @@ import javafx.beans.property.SimpleDoubleProperty;
 
 import org.opendolphin.core.Attribute;
 
-/**
- * Adapter for a Dolphin Attribute of type Double.
- *
- * @author Dieter Holz
- */
 public class DoubleAttributeAdapter extends SimpleDoubleProperty {
     private final ObjectAttributeAdapter<Double> wrapper;
 
